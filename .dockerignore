@@ -1,0 +1,12 @@
+# .dockerignore
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+*.env
+*.csv
+venv/
+.env
+app/services/gsheet_client.py
