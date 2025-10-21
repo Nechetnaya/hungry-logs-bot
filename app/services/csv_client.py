@@ -6,7 +6,7 @@ USERS_FILE = Path("data/users.csv")
 MEALS_FILE = Path("data/meals.csv")
 
 class CSVClient:
-    def __init__(self, users_file="users.csv", meals_file="meals.csv"):
+    def __init__(self, users_file=USERS_FILE, meals_file=MEALS_FILE):
         self.users_file = users_file
         self.meals_file = meals_file
         # создаём файлы, если их нет

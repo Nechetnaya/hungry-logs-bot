@@ -70,9 +70,9 @@ async def add_meal_handler(message: types.Message, state: FSMContext):
     user_profile = csv_client.get_user(user_id)
 
     text = (
-        f"✅ Записано\\! Приём: *{int(parsed.get('calories', 0))} ккал*, "
-        f"*{int(parsed.get('protein', 0))}/{int(parsed.get('fat', 0))}/{int(parsed.get('carbs', 0))}* БЖУ\n\n"
-        f"📊 Итог за день:\n"
+        f"✅ Записано\\! *{int(parsed.get('calories', 0))} ккал*, "
+        f"*{int(parsed.get('protein', 0))}/{int(parsed.get('fat', 0))}/{int(parsed.get('carbs', 0))} БЖУ*\n\n"
+        f"📊 Итого за день:\n"
         f"Калории: *{int(total['calories'])}* / {user_profile['target_cal']}\n"
         f"Белки: *{int(total['protein'])}* / {user_profile['p_goal']}\n"
         f"Жиры: *{int(total['fat'])}* / {user_profile['f_goal']}\n"

@@ -16,12 +16,8 @@ questions = [
     "Сколько тебе лет?",
     "Какого ты пола?",
     "Какой у тебя рост и вес?",
-    "Какой у тебя обычно уровень активности в течение дня?",
-    "Занимаешься ли ты спортом? Если да — как часто и каким видом?",
-    "Есть ли продукты, которые ты не ешь или ограничиваешь?",
-    "Есть ли у тебя медицинские ограничения?",
-    "Что ты хочешь достичь в первую очередь?",
-    "Есть ли конкретная цель по весу или внешнему виду?",
+    "Опиши свой уровень активности в течение дня? Как часто и каким видом спорта ты занимаешься?",
+    "Что ты хочешь достичь в первую очередь? Есть ли конкретная цель по весу или внешнему виду?",
     "За какой срок ты хочешь прийти к результату?",
 ]
 
@@ -112,8 +108,16 @@ async def confirm_goal_handler(message: types.Message, state: FSMContext):
     data = await state.get_data()
     profile = data.get("profile", {})
 
-    if message.text.lower() != "ок":
-        profile["goal"] = message.text  # пользователь ввёл свою цель
+    if message.text.lower() == "ок":
+        add_user_profile(message.from_user.id, profile)
+        await message.answer(
+            f"✅ Профиль сохранён!\n\n"
+            f"Цель: {profile['goal']}\n"
+            f"Калорийность: {profile['target_cal']} ккал\n"
+            f"БЖУ: {profile['p_goal']} / {profile['f_goal']} / {profile['c_goal']}"
+        )
+        await state.clear()
+        return
 
     await state.update_data(profile=profile)
     await state.set_state(Registration.set_macros)

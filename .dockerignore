@@ -5,8 +5,6 @@ __pycache__
 *.pyd
 *.sqlite3
 *.log
-*.env
 *.csv
 venv/
-.env
 app/services/gsheet_client.py
