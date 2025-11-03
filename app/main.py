@@ -8,8 +8,8 @@ from app.services.commands import set_default_commands
 
 
 # --- Инициализация ---
-bot = Bot(token=TELEGRAM_TOKEN_TEST)
-# bot = Bot(token=TELEGRAM_TOKEN)
+# bot = Bot(token=TELEGRAM_TOKEN_TEST)
+bot = Bot(token=TELEGRAM_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
 
