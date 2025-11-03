@@ -2,9 +2,9 @@
 build:
 	docker build -t hungry_bot .
 
-# --- Запуск контейнера Docker ---
+#--- Запуск контейнера Docker ---
 run-docker:
-	docker run -d -p 8443:80 hungry_bot -v $(pwd)/data:/app/data
+	docker run -d -p 8443:80  -v ./data:/app/data hungry_bot
 
 # --- Локальный запуск без Docker ---
 run:

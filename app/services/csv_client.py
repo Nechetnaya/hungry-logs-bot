@@ -109,3 +109,8 @@ class CSVClient:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(meals)
+
+    def get_all_user_ids(self):
+        with open("data/users.csv", "r", encoding="utf-8") as f:
+            lines = f.readlines()[1:]  # пропускаем заголовок
+        return [int(line.split(",")[0]) for line in lines if line.strip()]

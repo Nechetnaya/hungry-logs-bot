@@ -3,13 +3,13 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from app.config import TELEGRAM_TOKEN_TEST, TELEGRAM_TOKEN
-from app.handlers import registration, meals, statistics, meals_delete, help, restart
+from app.handlers import registration, meals, statistics, meals_delete, help, restart, admin
 from app.services.commands import set_default_commands
 
 
 # --- Инициализация ---
-# bot = Bot(token=TELEGRAM_TOKEN_TEST)
-bot = Bot(token=TELEGRAM_TOKEN)
+bot = Bot(token=TELEGRAM_TOKEN_TEST)
+# bot = Bot(token=TELEGRAM_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
 
@@ -21,6 +21,7 @@ dp.include_router(statistics.router)
 dp.include_router(meals_delete.router)
 dp.include_router(help.router)
 dp.include_router(restart.router)
+dp.include_router(admin.router)
 
 
 # --- Точка входа ---
