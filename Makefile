@@ -4,12 +4,17 @@ build:
 
 # --- Запуск контейнера Docker ---
 run-docker:
-	docker run -d -p 80:8443 hungry_bot
+	docker run -d -p 8443:80 hungry_bot -v $(pwd)/data:/app/data
 
 # --- Локальный запуск без Docker ---
-run-local:
+run:
 	python -m app.main
 
 # --- Установка зависимостей ---
 install:
 	pip install -r requirements.txt
+
+# --- Тесты ---
+test:
+	python -m pytest -v
+

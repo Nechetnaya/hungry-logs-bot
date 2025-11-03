@@ -162,6 +162,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
 app/hungry-logs-bot-credential.json
-/data
+data/
 .DS_Store
 **/.DS_Store
+app/logs/
+tests/
