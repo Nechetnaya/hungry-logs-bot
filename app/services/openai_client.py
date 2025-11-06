@@ -62,7 +62,7 @@ async def parse_meal_text(text: str, user_id: int) -> dict:
 - fat: количество жиров в граммах
 - carbs: количество углеводов в граммах
 - calories: калории
-- details: внутренние предположения и источники данных для логов 
+- details: confidence (float), внутренние предположения и источники данных  
 
 Правила:
 

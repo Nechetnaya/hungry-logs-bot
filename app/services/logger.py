@@ -4,6 +4,11 @@ import csv
 from datetime import datetime
 from pathlib import Path
 
+import json
+
+from app.services.telegram_logger import send_telegram_message, TelegramErrorHandler
+from app.config import TELEGRAM_CHAT_ID
+
 
 # === Папка для логов ===
 LOG_DIR = Path(__file__).resolve().parent.parent / "logs"
@@ -31,12 +36,18 @@ error_handler.setFormatter(formatter)
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(formatter)
 
+# === Telegram ошибки ===
+telegram_error_handler = TelegramErrorHandler()
+telegram_error_handler.setLevel(logging.ERROR)
+telegram_error_handler.setFormatter(formatter)
+
 # === Главный логгер ===
 logger = logging.getLogger("hungrylogs")
 logger.setLevel(logging.INFO)
 logger.addHandler(main_handler)
 logger.addHandler(error_handler)
 logger.addHandler(console_handler)
+logger.addHandler(telegram_error_handler)
 
 
 # === CSV для статистики ===
@@ -71,7 +82,9 @@ if not MODEL_LOG_FILE.exists():
 
 def log_model_interaction(user_id: int, input_text: str, json_result: dict, details: str = ""):
     """
-    Логирует каждый запрос пользователя к модели и результат анализа с деталями.
+    Логирует каждый запрос пользователя к модели:
+    - пишет в CSV и bot.log
+    - дублирует результат в Telegram
     """
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with MODEL_LOG_FILE.open("a", newline="", encoding="utf-8") as f:
@@ -83,4 +96,17 @@ def log_model_interaction(user_id: int, input_text: str, json_result: dict, deta
             json_result,
             details
         ])
-    logger.info(f"Model interaction logged (user_id={user_id}): {json_result}")
+    logger.info(f"Model interaction logged for user_id={user_id}")
+
+    if TELEGRAM_CHAT_ID:
+        try:
+            message = (
+                f"📊 <b>Модель</b>\n\n"
+                f"🕒 {timestamp}\n\n"
+                f"<b>Запрос:</b>\n{input_text}\n\n"
+                f"<b>Результат:</b>\n<pre>{json.dumps(json_result, ensure_ascii=False, indent=2)}</pre>\n\n"
+                f"<b>Details:</b>\n{details}"
+            )
+            send_telegram_message(TELEGRAM_CHAT_ID, message)
+        except Exception as e:
+            logger.error(f"Ошибка при отправке model log в Telegram: {e}")

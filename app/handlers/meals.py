@@ -6,6 +6,7 @@ import re
 from app.services.csv_client import CSVClient
 from app.services.openai_client import parse_meal_text
 from app.services.logger import logger, log_event, log_model_interaction
+# from app.services.rag_client import parse_meal_text_rag
 
 router = Router()
 csv_client = CSVClient()
@@ -40,6 +41,7 @@ async def add_meal_handler(message: types.Message, state: FSMContext):
     thinking_message = await message.answer("🤖 Разбираю приём пищи, ищу калории и БЖУ...")
 
     parsed = await parse_meal_text(meal_text, user_id)
+    # parsed_rag = await parse_meal_text_rag(meal_text, user_id)
 
     if parsed.get("clarification"):
         logger.info(f"⚠️ parse_meal_text вернул clarification для user {user_id}: '{meal_text}'")
@@ -81,7 +83,6 @@ async def add_meal_handler(message: types.Message, state: FSMContext):
     try:
 # log_model_interaction записывает в CSV и/или лог-файл (реализация в app.services.logger)
         log_model_interaction(user_id, meal_text, public_result, details)
-        logger.info(f"Model interaction logged for user {user_id}")
     except Exception as e:
         logger.exception(f"[log_model_interaction] failed for user {user_id}: {e}")
 
